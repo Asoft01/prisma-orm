@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -16,36 +17,60 @@ datasource db {
 model User {
   // id          Int     @id @default(autoincrement())
   id             String          @id @default(uuid())
+  age            Int
   name           String
-  email          String
-  isAdmin        Boolean
+  email          String          @unique
+  // isAdmin        Boolean 
+  role           Role            @default(BASIC)
   // preferences    Json
   // Post        Post[]
   writtenPosts   Post[]          @relation("WrittenPosts")
   favouritePosts Post[]          @relation("FavouritePosts")
-  userPreference UserPreference?
+  // userPreference UserPreference?
+  
+  userPreference         UserPreference?    @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId       String?  @unique
+  // index help with sorting and performance for example if you wanna query by email, it will be good to have index on tnat
+
+  // block level attributes 
+  // two or more users cant have same name and age 
+  @@unique([age, name])
+  @@index([email])
 }
 
+// one to one relationship
 model UserPreference {
   id           String  @id @default(uuid())
   emailUpdates Boolean
-  user         User    @relation(fields: [userId], references: [id])
-  userId       String @unique
+  // user         User    @relation(fields: [userId], references: [id])
+  // userId       String  @unique
+  user         User?
+
 }
 
 model Post {
   id             String     @id @default(uuid())
+  title          String
+  averageRating  Float
   rating         Float
-  createdAt      DateTime
-  updatedAt      DateTime
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
   author         User       @relation("WrittenPosts", fields: [authorId], references: [id])
   authorId       String
   favouritedBy   User?      @relation("FavouritePosts", fields: [favouritedById], references: [id])
   favouritedById String?
   categories     Category[]
+  // @@id([title, authorId])
+  // create a composite id that contains two different things. For example you could have id on the title or authorId. Meaning that our title and author represent id for the post. Instead of having autogenerator id up there
 }
 
 model Category {
   id    String @id @default(uuid())
+  name  String @unique
   posts Post[]
+}
+
+enum Role {
+  BASIC
+  ADMIN
 }
