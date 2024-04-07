@@ -83,12 +83,42 @@ async function main() {
 // })
 
 /////////////////////////////////////// FIND MANY USERS ////////////////////////
+// const users = await prisma.user.findMany({
+//     where: {
+//         name: "Sally"
+//     }
+// })
+
+///////////////////////////////// FIND MANY ON DISTINCT ///////////////////////
+// const users = await prisma.user.findMany({
+//     where: {
+//         name: "Sally", 
+//     }, 
+//     // distinct: ["name"]
+//     distinct: ["name", "age"]
+// })
+
+//////////////////////////////// PAGINATION /////////////////////////////////
+// const users = await prisma.user.findMany({
+//     where: {
+//         name: "Sally", 
+//     }, 
+//     orderBy: {
+//         age: "asc"
+//     }, 
+//     take: 2, 
+//     skip: 1
+// })
+
+/////////////////////////////// WHERE EQUALS ///////////////////////////////
 const users = await prisma.user.findMany({
     where: {
-        name: "Sally"
+        // name: { equals: "Sally" },
+        name: { not: "Sally" }
     }
 })
 console.log(users);
+console.log(users.length);
 }
 
 main()
