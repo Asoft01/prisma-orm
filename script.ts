@@ -111,14 +111,151 @@ async function main() {
 // })
 
 /////////////////////////////// WHERE EQUALS ///////////////////////////////
-const users = await prisma.user.findMany({
+// const users = await prisma.user.findMany({
+//     where: {
+//         // name: { equals: "Sally" },
+//         // name: { not: "Sally" }
+//         // name : { in: ["Sally", "Kyle"] }, 
+//         // name : { notIn: ["Sally", "kyle"] }
+//         // age : { lt: 20 }
+//         // age : { gt: 20 }
+//         ///////////////////////////////
+//         name: "Kyle", 
+//         age : { gte : 20 },
+//     }
+// })
+
+//////////////////////////////// CONTAINS ///////////////////////////////
+// const users = await prisma.user.findMany({
+//     where: {
+//         // email : { contains : "@test.com"}
+//         // email: { endsWith: "@test1.com"}
+//         email: { startsWith: "kyle" }, 
+//     }
+// })
+
+// const users = await prisma.user.findMany({
+//     where: {
+//         email: { startsWith: "kyle" }, 
+//         name: "Sally"
+//     }
+// })
+
+//////////////////////////////////////// AND ///////////////////////////////
+// const users = await prisma.user.findMany({
+//     // where: { 
+//     //     AND: [
+//     //         {email: {startsWith: "sally" } },
+//     //         {name: "Sally"}
+//     //     ], 
+//     // }
+//     /////////////////////////////////////////////
+//     // where: { 
+//     //     AND: [
+//     //         {email: {startsWith: "sally" } },
+//     //         {email : {endsWith: "test.com" } },
+//     //     ], 
+//     // }
+//     //////////////////////////////////////////////
+//     // where: {
+//     //     OR: [
+//     //         {email: {startsWith: "sally" } }, 
+//     //         {age: { gt: 20} }
+//     //     ]
+//     // }
+//     //////////////////////////////////////////////
+//     // where: {
+//     //     NOT: { email: { startsWith: "sally" } }
+//     // }, 
+
+//     //////////////////////// Query on relationships ////////////////////////
+//     // where: {
+//     //     userPreference: {
+//     //         emailUpdates: true
+//     //     }
+//     // }
+//     ////////////////////////////////////////////////////////////////////////
+//     // where: {
+//     //     writtenPosts: {
+//     //         every: {
+//     //             createdAt: new Date
+//     //         }
+//     //     }
+//     // }
+//     /////////////////////////////////////////////////////////////////////////
+//     // where: {
+//     //     writtenPosts: {
+//     //         // every: {
+//     //         //     title: "Test"
+//     //         // }
+//     //         //////
+//     //         // none: {
+//     //         //     title: "Test"
+//     //         // }
+//     //         ///////
+//     //         // some: {
+//     //         //     title: "Test"
+//     //         // }
+//     //         //////
+//     //         some: {
+//     //             title: { startsWith: "Test"}
+//     //         }
+//     //     }
+//     // }
+    
+//     // the above will return all the users with the 'every' and 'none keyword cox none of them has no post at all 
+//     // 
+// })
+// console.log(users);
+// console.log(users.length);
+/////////////////////////////////////////////////////////////////////////////////
+// const user = await prisma.post.findMany({
+//     where: {
+//         author: {
+//             isNot: {
+//                 age: 21, 
+//             }, 
+//         }
+//     }
+// })
+
+// console.log(user);
+
+///////////////////////////////////////// UPDATING ///////////////////////////////////////////////////
+// const user = await prisma.user.update({
+//     where: {
+//         email: "sally@test.com"
+//     }, 
+//     data:  {
+//         email: "sally@test3.com"
+//     }, 
+// });
+////////////////////////////////////////////////////////////////////
+// const user = await prisma.user.updateMany({
+//     where: {
+//         name: "Sally"
+//     }, 
+//     data:  {
+//         name: "New Sally"
+//     }
+// })
+// // the only thing about updateMany is that it does not allow us to select or include 
+
+///////////////////////////////////// UPDATE WITH FANCY STUFF /////////////////////
+const user = await prisma.user.update({
     where: {
-        // name: { equals: "Sally" },
-        name: { not: "Sally" }
+        email: "kyle@test.com", 
+    }, 
+    data: {
+        age: {
+            // increment: 1, 
+            // decrement: 1
+            divide: 10
+        }
     }
 })
-console.log(users);
-console.log(users.length);
+console.log(user);
+
 }
 
 main()
