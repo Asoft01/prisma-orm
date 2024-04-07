@@ -5,12 +5,12 @@ async function main() {
 //    const user = await prisma.user.create({ data: { name: "Sally" }}); 
 //    console.log(user); 
 ////////////////////////////////////////////////////////////////////////
-    const user = await prisma.user.findMany({
-        include:  {
-            userPreference: true
-        }
-    }); 
-    console.log(user);
+    // const user = await prisma.user.findMany({
+    //     include:  {
+    //         userPreference: true
+    //     }
+    // }); 
+    // console.log(user);
 //////////////////////////////////////////////////////////////////////
     // const users = await prisma.user.deleteMany(); 
 //////////////////////////////////////////////////////////////////////
@@ -58,8 +58,37 @@ async function main() {
 
 // console.log(users); 
 //////////////////////////////////////////////// Find Unique ////////////////////////////////////////////////////
-// const users = await prisma.user.findUnique()
+// const users = await prisma.user.findUnique({
+//     where: {
+//         email: "kyle@test.com", 
+//     }, 
+//     // include: {
+//     //     userPreference: true
+//     // }
+// });
+///////////////////////////////////////////////////////////////////////
+// const users = await prisma.user.findUnique({
+//     where: {
+//         age_name: {
+//             age: 24, 
+//             name: "Kyle"
+//         }
+//     }
+// })
+//////////////////////////////////// FIND FIRST //////////////////////////////
+// const users = await prisma.user.findFirst({
+//     where: {
+//         name: "Sally", 
+//     }
+// })
 
+/////////////////////////////////////// FIND MANY USERS ////////////////////////
+const users = await prisma.user.findMany({
+    where: {
+        name: "Sally"
+    }
+})
+console.log(users);
 }
 
 main()
